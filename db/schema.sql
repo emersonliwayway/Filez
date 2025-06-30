@@ -1,18 +1,16 @@
 -- TODO
-create table folders {
-  id serial [pk]
-  name text [unique, not null]
-}
+DROP TABLE IF EXISTS folders;
+DROP TABLE IF EXISTS files;
 
-create table files {
-  id serial [pk]
-  name text [not null]
-  size int [not null]
-  folder_id int [not null]
+CREATE TABLE folders (
+    id serial PRIMARY KEY,
+    name text NOT NULL UNIQUE
+);
 
-  indexes {
-    (name, folder_id) [unique]
-  }
-}
-
-Ref: folders.id < files.folder_id
+CREATE TABLE files (
+    id serial PRIMARY KEY,
+    name text NOT NULL,
+    size integer NOT NULL,
+    folder_id integer NOT NULL REFERENCES folders(id) ON DELETE CASCADE,
+    UNIQUE (name, folder_id)
+);
